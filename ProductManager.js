@@ -1,68 +1,76 @@
-class productManager {
+class ProductManager {
     constructor() {
-
         this.products = []
-
     }
-
-    getProducts = () => this.products
-
     static id = 0
 
-    agregoProducts = (cod, nombre, modelo, precio, img, stock = 15)=>{
+    agregoProducts = (nombre, modelo, precio, img, codigo, stock)=>{
 
-        for (let i = 0; i < this.products.length; i++) {
-            if (this.products[i.cod === cod]) {
-                console.log('el Código ${cod} existe')
-                break;
+        for (let i = 0; i < this.products.length; i++){
+           if (this.products[i].codigo === codigo) {
+                 console.log(`el código ${codigo} ya existe`)  
+                 break;
             }
         }
-
-
         const product = {
-            cod,
             nombre,
             modelo,
             precio,
             img,
+            codigo,
             stock,
-            id: productManager.id
+        }; 
 
-        }
+         if (!Object.values(product).includes(undefined)){
+             ProductManager.id++;
+             this.products.push ({ ...product, id:ProductManager.id,});
 
-    
+         }else{
+             console.log ("Completar todos los datos")
+         }
+      
+    }
 
-
-        if (this.products.length === 0) {
-            product.id = 1
-        } else {
-            product.id = this.products.length + 1
-        }
-        this.products.push(product)
-
+    getProducts() {
+        return this.products
     }
 
     existe(id) {
-        return this.products.find((producto) => producto.id === id)
+        return this.products.find((product) => product.id === id)
     }
 
     getProductsById(id) {
 
-        !this.existe(id) ? console.log("Not Found") : console.log(this.existe(id))
+        !this.existe(id) ? console.log("Not Found") : console.log(this.existe(id));
 
     }
 
-
-
 }
 
-const respuestos = new productManager()
-
-respuestos.agregoProducts('1234', 'nombre1', 'modelo1', 60, 'img1', 10)
-
-respuestos.agregoProducts('1234', 'nombre1', 'modelo1', 60, 'img1', 10)
-
-console.log(respuestos.getProducts())
 
 
-//respuestos.getProductsById(5)
+const respuestos = new ProductManager()
+console.log(respuestos.getProducts());
+
+
+respuestos.agregoProducts('nombre1', 'modelo1', 60, 'img1', '1234', 10)
+
+
+//Se crea el id (autoincrementable)
+respuestos.agregoProducts('nombre2', 'modelo2', 35, 'img2', '1235', 15)
+respuestos.agregoProducts('nombre3', 'modelo3', 40, 'img3', '1236', 3)
+
+console.log(respuestos.getProducts());
+
+
+//muestra que el códgo existe
+respuestos.agregoProducts('nombre2', 'modelo2', 35, 'img2', '1235', 15)
+
+//no permite el ingreso incompleto
+respuestos.agregoProducts('nombre4', 35, 'img4', '1237', 15)
+
+
+//ejemplos de busqueda con el id, lo muestra fuera del array
+respuestos.getProductsById(2);
+
+respuestos.getProductsById(7);
